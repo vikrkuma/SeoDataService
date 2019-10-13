@@ -22,17 +22,20 @@ async function getJsonData(requestData: string): Promise<ISeoData> {
   validateJsonData(jsonData);
   const data = await csv().fromString(jsonData.data);
   return {
-    key: jsonData.key,
+    ...jsonData,
     data
   };
 }
 
 /** Validates that all the required fields are present in request payload. */
-function validateJsonData(jsonData: ISeoData) {
-  if (!jsonData.key) {
-    throw "Invalid data provided. [key] property not found!";
+export function validateJsonData(jsonData: ISeoData, noValidateData = false) {
+  if (!jsonData.resourceId) {
+    throw "Invalid data provided. [resourceId] property not found!";
   }
-  if (!jsonData.data) {
-    throw "Invalid data provided. [data] property not provided/invalid!";
+  if (!jsonData.objectId) {
+    throw "Invalid data provided. [objectId] property not found!";
+  }
+  if (!noValidateData && !jsonData.data) {
+    throw "Invalid data provided. [data] property not provided!";
   }
 }

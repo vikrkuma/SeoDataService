@@ -12,14 +12,14 @@ export function BAD_PAYLOAD(message = "Bad Payload"): NodeResponse {
   };
 }
 
-export function OK_POST_RESPONSE(message: string): NodeResponse {
+export function OK_RESPONSE(message: string): NodeResponse {
   return {
     statusCode: 200,
     body: message
   };
 }
 
-export function ERROR_POST_RESPONSE(message: string): NodeResponse {
+export function ERROR_RESPONSE(message: string): NodeResponse {
   return {
     statusCode: 500,
     body: message

@@ -25,6 +25,9 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:PutObject"
+        - "s3:GetObject"
+        - "s3:DeleteObject"
+        - "s3:ListBucket"
       Resource:
         - "arn:aws:s3:::${self:custom.bucket}/*"
 
@@ -34,7 +37,19 @@ functions:
     events:
       - http:
           method: post
-          path: upload
+          path: uploadCsv
+          cors: true
+    handler: handlers.getJsonFromS3
+    events:
+      - http:
+          method: get
+          path: getJson/{resourceId}/{objectId}
+          cors: true
+    handler: handlers.getJsonFromS3
+    events:
+      - http:
+          method: get
+          path: getJson/{resourceId}/{cacheId}/{objectId}
           cors: true
     environment:
       Bucket: ${self:custom.bucket}
