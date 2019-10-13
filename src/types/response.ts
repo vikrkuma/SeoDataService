@@ -1,3 +1,4 @@
+import { IResourceIdentifier } from "types/s3Objects";
 export type AnyData = string | boolean | number;
 
 export interface ISingleJsonData {
@@ -6,15 +7,9 @@ export interface ISingleJsonData {
 
 export type IJsonData = ISingleJsonData | ISingleJsonData[];
 
-export interface ISeoKey {
-  resourceId: string;
-  cacheId?: string;
-  objectId: string;
-}
-
 export type PathParameters = { [name: string]: string } | null;
 
-export interface ISeoData extends ISeoKey {
+export interface ISeoData extends IResourceIdentifier {
   data: IJsonData;
 }
 

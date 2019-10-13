@@ -10,26 +10,31 @@ plugins:
 
 custom:
   bucket: seo-data-service-test-v4
+  region: ap-southeast-1
+  profile: seo-data-service-test-admin
+  accountId: 009079049616
+  stage: dev
 
 provider:
   name: aws
   runtime: nodejs8.10
-  profile: seo-data-service-text-admin
-  region: ap-southeast-1
+  profile: ${self:custom.profile}
+  region: ${self:custom.region}
+  stage: ${self:custom.stage}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
         - "lambda:InvokeFunction"
       Resource:
-        - "*"
+        - "arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:function:${self:service.name}-${self:custom.stage}-GetSeoData"
+        - "arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:function:${self:service.name}-${self:custom.stage}-UploadSeoData"
     - Effect: "Allow"
       Action:
         - "s3:PutObject"
         - "s3:GetObject"
-        - "s3:DeleteObject"
         - "s3:ListBucket"
       Resource:
-        - "arn:aws:s3:::${self:custom.bucket}/*"
+        - "arn:aws:s3:::${self:custom.bucket}*"
 
 functions:
   UploadSeoData:
@@ -39,17 +44,18 @@ functions:
           method: post
           path: uploadCsv
           cors: true
+    environment:
+      Bucket: ${self:custom.bucket}
+  GetSeoData:
     handler: handlers.getJsonFromS3
     events:
       - http:
           method: get
           path: getJson/{resourceId}/{objectId}
           cors: true
-    handler: handlers.getJsonFromS3
-    events:
       - http:
           method: get
-          path: getJson/{resourceId}/{cacheId}/{objectId}
+          path: getJson/{resourceId}/{objectId}/{cacheId}
           cors: true
     environment:
       Bucket: ${self:custom.bucket}

@@ -8,9 +8,10 @@ import {
 } from "constants/requests";
 import { extractJsonFromCsv } from "helpers/jsonUtils";
 import { uploadJsonToS3 } from "helpers/s3Utils";
+import { POST } from "constants/methods";
 
 const uploadCsv: APIGatewayProxyHandler = async (event, _context) => {
-  if (event.httpMethod !== "POST") return BAD_REQUEST;
+  if (event.httpMethod !== POST) return BAD_REQUEST;
 
   // Logging.
   console.log("***** Request Body *******", event.body, typeof event.body);

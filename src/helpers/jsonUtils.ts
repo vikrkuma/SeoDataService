@@ -1,11 +1,13 @@
 import { ISeoData } from "types/response";
 import { PR, OK, ERR } from "types/data";
 import * as csv from "csvtojson";
+import { validateJsonData } from "helpers/responseValidator";
+import { NO_DATA_PROVIDED_FOR_UPLOAD } from "constants/errors";
 
 export async function extractJsonFromCsv(
   data: string | null
 ): PR<ISeoData, string> {
-  if (!data) return new ERR("No data provided!");
+  if (!data) return new ERR(NO_DATA_PROVIDED_FOR_UPLOAD);
 
   let parsedCsv = null;
   try {
@@ -25,17 +27,4 @@ async function getJsonData(requestData: string): Promise<ISeoData> {
     ...jsonData,
     data
   };
-}
-
-/** Validates that all the required fields are present in request payload. */
-export function validateJsonData(jsonData: ISeoData, noValidateData = false) {
-  if (!jsonData.resourceId) {
-    throw "Invalid data provided. [resourceId] property not found!";
-  }
-  if (!jsonData.objectId) {
-    throw "Invalid data provided. [objectId] property not found!";
-  }
-  if (!noValidateData && !jsonData.data) {
-    throw "Invalid data provided. [data] property not provided!";
-  }
 }
