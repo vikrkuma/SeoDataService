@@ -1,3 +1,5 @@
+import { SeoS3ObjectName } from "types/s3Objects";
+
 export const NO_DATA_PROVIDED_FOR_UPLOAD = "No data provided!";
 
 export const INVALID_REQUEST_RESOURCE_ID =
@@ -17,3 +19,7 @@ export const NO_PATH_PARAMETERS =
 export const INCORRECT_CACHE_LENGTH = "Incorrect cache id length provided!";
 
 export const INCORRECT_CACHE_FORMAT = "Incorrect date in cache id provided!";
+
+export function INVALID_LAST_MODIFIED_DATE(object: SeoS3ObjectName): string {
+  return `"Invalid last modified date given for "${JSON.stringify(object)}`;
+}

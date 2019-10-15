@@ -1,4 +1,4 @@
-import { DIRECTORY_SEPARATOR, VERSION_PREFIX } from "constants/fileTypes";
+import { DIRECTORY_SEPARATOR, JSONFileExt } from "constants/fileTypes";
 import { IResourceIdentifier } from "types/s3Objects";
 
 export function getObjectKeyPrefix(
@@ -8,6 +8,6 @@ export function getObjectKeyPrefix(
     resourcePrefix.resourceId +
     DIRECTORY_SEPARATOR +
     resourcePrefix.objectId +
-    VERSION_PREFIX
+    JSONFileExt
   );
 }

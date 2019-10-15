@@ -11,7 +11,8 @@ export const getS3ObjectContent = async (
 ): PR<string, string> => {
   const params = {
     Bucket: BUCKET,
-    Key: fileObject.key
+    Key: fileObject.key,
+    VersionId: fileObject.versionId
   };
   try {
     const objectData = await S3.getObject(params).promise();
