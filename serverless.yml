@@ -65,3 +65,42 @@ resources:
         BucketName: ${self:custom.bucket}
         VersioningConfiguration:
           Status: Enabled
+    CloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Comment: Cloud Distribution for SEO Data service.
+          PriceClass: PriceClass_200
+          Enabled: true
+          DefaultCacheBehavior:
+            ForwardedValues:
+              QueryString: false
+            TargetOriginId: SeoDataS3Origin
+            ViewerProtocolPolicy: redirect-to-https
+          CacheBehaviors:
+            - ForwardedValues:
+                QueryString: false
+              PathPattern: /${self:custom.stage}
+              TargetOriginId: SeoDataApiGatewayOrigin
+              ViewerProtocolPolicy: redirect-to-https
+              AllowedMethods:
+                - HEAD
+                - DELETE
+                - POST
+                - GET
+                - OPTIONS
+                - PUT
+                - PATCH
+          Origins:
+            - Id: SeoDataApiGatewayOrigin
+              DomainName:
+                Fn::Join:
+                  - "."
+                  - - Ref: ApiGatewayRestApi
+                    - execute-api.${self:custom.region}.amazonaws.com
+              CustomOriginConfig:
+                OriginProtocolPolicy: https-only
+            - Id: SeoDataS3Origin
+              DomainName: ${self:custom.bucket}.s3.amazonaws.com
+              CustomOriginConfig:
+                OriginProtocolPolicy: https-only
