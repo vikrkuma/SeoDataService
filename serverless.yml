@@ -72,6 +72,7 @@ resources:
           Comment: Cloud Distribution for SEO Data service.
           PriceClass: PriceClass_200
           Enabled: true
+          HttpVersion: http2
           DefaultCacheBehavior:
             ForwardedValues:
               QueryString: false
@@ -80,7 +81,7 @@ resources:
           CacheBehaviors:
             - ForwardedValues:
                 QueryString: false
-              PathPattern: /${self:custom.stage}
+              PathPattern: /cached
               TargetOriginId: SeoDataApiGatewayOrigin
               ViewerProtocolPolicy: redirect-to-https
               AllowedMethods:
